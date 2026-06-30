@@ -145,9 +145,8 @@ function renderTabel() {
 
 // --- Fungsi untuk memulai mode edit ---
 function handleEdit(id) {
-    // Jika sedang edit item lain, batalkan dulu
+    // Jika sedang edit item lain, batalkan otomatis
     if (idYangDiedit !== null && idYangDiedit !== id) {
-        // Batal otomatis tanpa menyimpan
         idYangDiedit = null;
     }
     idYangDiedit = id;
@@ -156,11 +155,9 @@ function handleEdit(id) {
 
 // --- Fungsi menyimpan perubahan dari mode edit ---
 function handleSave(id) {
-    // Ambil elemen tr yang sesuai
     const tr = document.querySelector(`tr[data-id="${id}"]`);
     if (!tr) return;
 
-    // Ambil nilai dari input
     const inputNama = tr.querySelector('.edit-nama');
     const selectMenu = tr.querySelector('.edit-menu');
     const inputJumlah = tr.querySelector('.edit-jumlah');
@@ -173,11 +170,10 @@ function handleSave(id) {
 
     // Validasi
     if (namaBaru === '' || menuBaru === '' || isNaN(jumlahBaru) || jumlahBaru < 1 || tanggalBaru === '') {
-        alert('Semua field harus diisi dengan benar!');
+        alert('⚠️ Semua field harus diisi dengan benar!');
         return;
     }
 
-    // Cari index data
     const index = daftarPesanan.findIndex(item => item.id === id);
     if (index === -1) return;
 
@@ -190,9 +186,9 @@ function handleSave(id) {
         tanggal: tanggalBaru
     };
 
-    // Keluar dari mode edit
     idYangDiedit = null;
     renderTabel();
+    alert('✅ Data berhasil diperbarui!');
 }
 
 // --- Fungsi batal edit ---
@@ -201,24 +197,22 @@ function handleCancel() {
     renderTabel();
 }
 
-// --- Fungsi hapus ---
+// --- Fungsi hapus (langsung tanpa konfirmasi) ---
 function handleHapus(id) {
     if (idYangDiedit !== null) {
-        alert('Selesaikan edit terlebih dahulu!');
+        alert('⚠️ Selesaikan edit terlebih dahulu!');
         return;
     }
-    const konfirmasi = confirm('Yakin ingin menghapus pesanan ini?');
-    if (!konfirmasi) return;
 
     daftarPesanan = daftarPesanan.filter(item => item.id !== id);
     renderTabel();
+    alert('🗑️ Pesanan berhasil dihapus!');
 }
 
 // --- Tambah pesanan baru ---
 function tambahPesanan(nama, menu, jumlah, tanggal) {
-    // Cek apakah ada edit yang sedang berlangsung
     if (idYangDiedit !== null) {
-        alert('Selesaikan edit terlebih dahulu!');
+        alert('⚠️ Selesaikan edit terlebih dahulu!');
         return false;
     }
 
@@ -231,6 +225,7 @@ function tambahPesanan(nama, menu, jumlah, tanggal) {
     };
     daftarPesanan.push(newItem);
     renderTabel();
+    alert('✅ Pesanan berhasil ditambahkan!');
     return true;
 }
 
@@ -249,7 +244,7 @@ form.addEventListener('submit', function (e) {
     const tanggal = tanggalInput.value;
 
     if (nama === '' || menu === '' || isNaN(jumlah) || jumlah < 1 || tanggal === '') {
-        alert('Semua field wajib diisi dengan benar!');
+        alert('⚠️ Semua field wajib diisi dengan benar!');
         return;
     }
 
@@ -266,21 +261,21 @@ function initDataContoh() {
     const contoh = [
         {
             id: ++idCounter,
-            nama: 'Dinda',
+            nama: 'Ayu Lestari',
             menu: 'Deep Roast Oolong Milk Tea',
             jumlah: 2,
             tanggal: '2026-06-28'
         },
         {
             id: ++idCounter,
-            nama: 'Rizky Erlangga',
+            nama: 'Rizky Pratama',
             menu: 'High Mountain Four Season Oolong Milk Tea',
             jumlah: 1,
             tanggal: '2026-06-29'
         },
         {
             id: ++idCounter,
-            nama: 'Maya Damanik',
+            nama: 'Maya Sari',
             menu: 'Jasmine Green Milk Tea',
             jumlah: 3,
             tanggal: '2026-06-30'
